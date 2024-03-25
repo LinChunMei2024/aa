@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<body>
+<div id="app">
+    <h1>登录</h1>
+    <input type="text" v-model="user.username"><br>
+    <input type="password" v-model="user.password"><br>
+    <button @click="lin()">登录</button>
+    <button @click="lin2()">注册</button>
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+           user:{
+               username:'' ,
+               password:'',
+           }
+        },
+        methods:{
+            //查询
+            lin(){
+                axios.get("http://localhost:8080/users/login?username="+this.user.username+"&password="+this.user.password)
+                    .then(res=>{
+                        console.log(res)
+                        if (res.data==1){
+                            alert('登录成功')
+                        }else{
+                            alert('shibai')
+                            this.user.username=''
+                            this.user.password=''
+                        }
+
+                    })
+            },
+            //注册
+            lin2(){
+                axios.post("http://localhost:8080/users/addUser",this.user)
+                    .then(res=>{
+                        console.log(res)
+                        if (res.data==1){
+                            alert('成功')
+                        }else {
+                            alert('shibai')
+                        }
+                    })
+        }
+        }
+    })
+</script>
+</html>
